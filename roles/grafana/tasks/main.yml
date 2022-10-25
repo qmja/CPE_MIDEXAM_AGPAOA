@@ -1,0 +1,33 @@
+
+  - name: Creating directory for Grafana
+    file:
+      path: ~/grafana
+      state: directory
+ 
+  - name: Installing and extracting Grafana
+    unarchive:
+      src: https://github.com/grafana/agent/releases/download/v0.25.0/agent-linux-amd64.zip
+      dest: ~/grafana
+      remote_src: yes
+      mode: 0777
+      owner: root
+      group: root
+
+  - name: Copying Grafana to /usr/local/bin
+    shell: |
+      cd ~/grafana/grafana*
+      cp -r . /usr/local/bin/grafana
+
+  - name: Moving the Grafana systemd Service unit file
+    copy:
+      src: graf.service
+      dest: /etc/systemd/system/
+      owner: root
+      group: root
+      mode: 777
+
+  - name: Starting/Restarting Grafana
+    service:
+      name: graf
+      state: restarted
+      enabled: true

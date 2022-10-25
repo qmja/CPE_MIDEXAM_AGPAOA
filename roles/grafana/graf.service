@@ -1,0 +1,11 @@
+[Unit]
+Description=Grafana
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/grafana/grafana --config.file=/usr/local/bin/grafana/graf.yml
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
